@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "es5", /*编译成es5代码*/
+    "module": "ESNext", /*指定模块代码的生成方式*/
+    "outDir": "./dist", /*指定输出目录*/
+    "strict": true,
+    "lib": [ /*指定编译时用来包含的编译文件*/
+      "dom",
+      "ESNext"
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    }
+  },
+  "include": [
+    "./src/**/*"
+  ]
+}

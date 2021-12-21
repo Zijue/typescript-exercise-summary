@@ -1,0 +1,20 @@
+{
+  "name": "typescript-exercise-summary",
+  "version": "1.0.0",
+  "description": "TS练习汇总",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Zijue/typescript-exercise-summary.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Zijue/typescript-exercise-summary/issues"
+  },
+  "homepage": "https://github.com/Zijue/typescript-exercise-summary#readme"
+}
