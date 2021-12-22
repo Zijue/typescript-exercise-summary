@@ -8,6 +8,7 @@
       "dom",
       "ESNext"
     ],
+    "experimentalDecorators": true,
     "baseUrl": ".",
     "paths": {
       "@/*": [
