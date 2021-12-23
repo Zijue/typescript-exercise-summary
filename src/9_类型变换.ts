@@ -68,3 +68,60 @@ namespace a {
     }
     type Ret = ReturnType<typeof sum1>; //any
 }
+
+/* ---------- 交叉类型 ---------- */
+//交叉类型(Intersection Types)是将多个类型合并为一个类型
+//这让我们可以把现有的多种类型叠加到一起成为一种类型，它包含了所需的所有类型的特性
+namespace b {
+    //接口的交叉
+    interface Bird {
+        name: string,
+        fly(): void
+    }
+    interface Person {
+        name: string,
+        talk(): void
+    }
+    type BirdPerson = Bird & Person;
+    let p: BirdPerson = { name: 'zhufeng', fly() { }, talk() { } };
+    p.fly;
+    p.name
+    p.talk;
+
+    //联合类型的交叉类型
+    type Ta = string | number;
+    type Tb = number | boolean;
+    type Tc = Ta & Tb; //number
+
+    //mixin案例
+    interface AnyObject {
+        [prop: string]: any;
+    }
+    function mixin<T extends AnyObject, U extends AnyObject>(one: T, two: U): T & U {
+        const result = <T & U>{};
+        for (let key in one) {
+            (<T>result)[key] = one[key];
+        }
+        for (let key in two) {
+            (<U>result)[key] = two[key];
+        }
+        return result;
+    }
+    const x = mixin({ name: "zhufeng" }, { age: 11 });
+    console.log(x.name, x.age);
+}
+
+/* ---------- typeof ---------- */
+//可以获取一个变量的类型
+namespace c {
+    let p1 = {
+        name: 'zijue',
+        age: 18,
+        gender: 'male'
+    }
+    type People = typeof p1;
+    function getName(p: People): string {
+        return p.name;
+    }
+    getName(p1);
+}
