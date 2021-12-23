@@ -1,3 +1,5 @@
+export { };
+
 /* ---------- 泛型 ---------- */
 //泛型是指在定义函数、接口或类的时候，不预先指定具体的类型，而在使用的时候再指定类型的一种特性
 //泛型<T>作用域只限于函数内部使用
@@ -118,3 +120,84 @@ namespace h {
     logger2('zhufeng');
     // logger2(1);
 }
+
+/* ---------- 泛型类型别名 ---------- */
+namespace i {
+    type Cart<T> = { list: T[] } | T[]; //type就表示类型别名
+    let c1: Cart<string> = { list: ['1'] };
+    let c2: Cart<number> = [1]
+}
+
+/* ---------- 泛型接口 vs 泛型类型别名 ---------- */
+/**
+ * 接口创建了一个新的名字，它可以在其它任意地方被调用。而类型别名并不创建新的名字，例如报错信息就不会使用别名
+ * 类型别名不能被extends和implements，这时我们应该尽量使用接口代替类型别名
+ * 当我们需要使用联合类型或者元组类型的时候，类型别名会更合适
+ * 
+ * 能用接口就不要用类型别名
+ */
+
+/* ---------- compose案例 ---------- */
+type Func<T extends any[], R> = (...a: T) => R
+
+export default function compose(): <R>(a: R) => R
+
+export default function compose<F extends Function>(f: F): F
+
+/* two functions */
+export default function compose<A, T extends any[], R>(
+    f1: (a: A) => R,
+    f2: Func<T, A>
+): Func<T, R>
+
+/* three functions */
+export default function compose<A, B, T extends any[], R>(
+    f1: (b: B) => R,
+    f2: (a: A) => B,
+    f3: Func<T, A>
+): Func<T, R>
+
+/* four functions */
+export default function compose<A, B, C, T extends any[], R>(
+    f1: (c: C) => R,
+    f2: (b: B) => C,
+    f3: (a: A) => B,
+    f4: Func<T, A>
+): Func<T, R>
+
+/* rest */
+export default function compose<R>(
+    f1: (a: any) => R,
+    ...funcs: Function[]
+): (...args: any[]) => R
+
+export default function compose<R>(...funcs: Function[]): (...args: any[]) => R
+
+export default function compose(...funcs: Function[]) {
+    if (funcs.length === 0) {
+        // infer the argument type so it is usable in inference down the line
+        return <T>(arg: T) => arg
+    }
+
+    if (funcs.length === 1) {
+        return funcs[0]
+    }
+
+    return funcs.reduce((a, b) => (...args: any) => a(b(...args)))
+}
+//示例：
+//零个函数中间件
+let c1 = compose()<string>('zijue');
+//一个函数中间件
+interface F {
+    (a: string): string
+}
+let f1: F = (a: string): string => a + 'f';
+let c2 = compose<F>(f1)('zijue');
+//两个函数中间件
+type A = string;
+type R = string;
+type T = string[];
+let f2 = (a: A): R => a + 'f2';
+let f3 = (...a: T): A => a + 'f3';
+let c3 = compose<A, T, R>(f2, f3)('zijue');
