@@ -209,3 +209,15 @@ namespace l {
     type Merge<O1 extends object, O2 extends object> = Compute<O1 & Omit<O2, keyof O1>>;
     type test = Merge<O1, O2>;
 }
+
+/* ---------- Mutable ---------- */
+//将T的所有属性的readonly移除
+namespace m {
+    type Mutable<T> = {
+        -readonly [P in keyof T]: T[P];
+    }
+    type test = Mutable<{
+        readonly name: string;
+        readonly age: number
+    }>
+}
